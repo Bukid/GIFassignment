@@ -1,0 +1,77 @@
+<!doctype>
+<html>
+<head>
+
+	<title> GIFS </title>
+
+	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+</head>
+
+<body>
+	
+  <button data-person="Nate Diaz"> Fuck you and your gameplan </button>
+
+  <button data-person="Conner Mcgregor">
+   Nothing good ever comes from worrying or sitting there feeling sorry for yourself... Keep positive and keep pushing on
+   and things will turn good
+  </button>
+
+  <button data-person="Gandhi">
+	In a gentle way you can shake the world.
+  </button>
+
+  <button data-person="Mark Hunt">
+  I'm always down for a battle. I was born down. You know this
+  </button>
+
+  <button data-person="Michael Bisping">
+  We're man enough to step in there and fight our hearts out and you have to be man enough to deal with a loss
+  </button>
+
+  <div id="gifs-appear-here">
+  </div>
+
+  <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+  <script type="text/javascript">
+    
+    $("button").on("click", function() {
+      
+      var person = $(this).attr("data-person");
+      
+      var queryURL = "http://api.giphy.com/v1/gifs/search?q=" +
+        person + "&api_key=dc6zaTOxFJmzC&limit=10";
+      
+      $.ajax({
+          url: queryURL,
+          method: "GET"
+        })
+       
+        .done(function(response) {
+         
+          var results = response.data;
+          
+          for (var i = 0; i < results.length; i++) {
+            if (results[i].rating !== "r" && results[i].rating !== "pg-13") {
+           
+            var gifDiv = $("<div class='item'>");
+            
+            var rating = results[i].rating;
+            
+            var p = $("<p>").text("Rating: " + rating);
+           
+            var personImage = $("<img>");
+              personImage.attr("src", results[i].images.fixed_height.url);
+            
+              gifDiv.append(p);
+              gifDiv.append(personImage);
+             
+              $("#gifs-appear-here").prepend(gifDiv);
+            }
+          }
+        });
+    });
+  </script>
+</body>
+
+</html>
+</body>
